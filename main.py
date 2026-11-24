@@ -30,6 +30,13 @@ def main() -> int:
     with open(OUTPUT_FILE, "w", encoding="utf-8", newline="\n") as f:
         f.write(text + "\n")
     os.chmod(OUTPUT_FILE, 0o644)
+    # Re-read verification: confirm the file on disk is exactly what we wrote.
+    with open(OUTPUT_FILE, "r", encoding="utf-8", newline="\n") as f:
+        actual = f.read()
+    if actual != text + "\n":
+        print("error: re-read verification failed: /output/entry.txt "
+              "does not match the expected content", file=sys.stderr)
+        return 1
     return 0
 
 
